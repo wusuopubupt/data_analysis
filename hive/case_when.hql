@@ -6,6 +6,7 @@ SELECT
     WHEN "imp"   THEN "展示"
     WHEN "play"  THEN "播放"
     WHEN "close" THEN "关闭"
+    ELSE NULL
     END AS action_type,"\t",
     count(1) AS pv,"\t",
     count(distinct user_id) AS uv
