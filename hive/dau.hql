@@ -40,3 +40,20 @@ Left Semi Join -- only dispaly col of tbl1  refer: http://www.crazyant.net/1470.
     AND user_agent LIKE '%chrome%'
 )tb2
 ON tb1.user_id=tb2.user_id;
+
+-- one week retention
+SELECT channel_from, count(distinct user_id_a), count(distinct user_id_b), count(distinct user_id_b)/count(distinct user_id_a)
+FROM
+(SELECT distinct a.channel_from AS channel_from, a.user_id AS user_id_a,  b.user_id AS user_id_b
+ FROM
+  (SELECT channel_from , user_id 
+   FROM tbl_access_log 
+   WHERE event_day = '20160304' AND action_type='install'  -- installed at 20160304
+  ) a LEFT OUTER JOIN
+  (SELECT channel_from , user_id 
+   FROM tbl_access_log
+   WHERE event_day > '20160304' AND event_day <= '20160311' AND action_type='launch' -- launched in 20160305--20140311
+  ) b
+  ON (b.user_id=a.user_id)
+) c
+GROUP BY channel_from
