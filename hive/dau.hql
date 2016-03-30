@@ -1,4 +1,4 @@
--- PV stat event_day=20160304 and channel_from=github and ua like '%chrome%'
+-- PV stat
 SELECT count(1)
 FROM tbl_access_log
 WHERE
@@ -30,7 +30,7 @@ FROM
     AND channel_from='github'
     AND user_agent LIKE '%chrome%'
 )tb1
-Left Semi Join
+Left Semi Join -- only dispaly col of tbl1  refer: http://www.crazyant.net/1470.html
 (
     SELECT DISTINCT user_id
     FROM tbl_access_log 
