@@ -9,7 +9,7 @@ if [ $# -lt 1 ];then
     exit 1
 fi
 
-#读取配置
+#露脕脠隆脜盲脰脙
 conf=$1
 if [ -f $conf ];then
     source $conf
@@ -18,9 +18,9 @@ else
     exit -1
 fi
 
-# 加载conf后定义，否则hadoop_command找不到
-# 删除hdfs上的目录或文件，输入两个参数：目录路径
-# 参数错误返回1，删除失败返回2，成功返回0
+# 录脫脭脴conf潞贸露篓脪氓拢卢路帽脭貌hadoop_command脮脪虏禄碌陆
+# 脡戮鲁媒hdfs脡脧碌脛脛驴脗录禄貌脦脛录镁拢卢脢盲脠毛脕陆赂枚虏脦脢媒拢潞脛驴脗录脗路戮露
+# 虏脦脢媒麓铆脦贸路碌禄脴1拢卢脡戮鲁媒脢搂掳脺路碌禄脴2拢卢鲁脡鹿娄路碌禄脴0
 function hdfs_del_dir()
 {
     if [ $# -lt 1 ];then
@@ -48,7 +48,7 @@ function hdfs_del_dir()
 next_day=$(date +%Y%m%d -d '-10 minutes')
 next_hour=$(date +%H -d '-10 minutes')
 next_minute=$(date +%M -d '-10 minutes')
-# 调整为整10分钟形式(eg: 13-->10)
+# 碌梅脮没脦陋脮没10路脰脰脫脨脦脢陆(eg: 13-->10)
 next_minute=$(($next_minute / 10))"0"
 
 if [ $# -eq 4 ];then
@@ -57,25 +57,25 @@ if [ $# -eq 4 ];then
     next_minute=$4
 fi
 
-#数据输入和输出目录
+#脢媒戮脻脢盲脠毛潞脥脢盲鲁枚脛驴脗录
 source_dir_prefix=$SOURCE_DIR_PREFIX
 mapred_output_dir_prefix=$MAPRED_OUTPUT_DIR_PREFIX
 pipe_name=$LOG_PIPE_NAME
 source_del_interval=$SOURCE_DEL_INTERVAL
 ready_file_num=$READY_FILE_NUM
 
-# 容忍部分数据丢失，但最多丢失10个文件，一般是由于上游机器故障，导致日志导出失败
-# 也可能是hadoop延时导致部分文件暂未就绪，这种情况待hadoop恢复时会自己恢复正常
-# 若是机器故障导致，则需要人工check上游logagent是否启动
+# 脠脻脠脤虏驴路脰脢媒戮脻露陋脢搂拢卢碌芦脳卯露脿露陋脢搂10赂枚脦脛录镁拢卢脪禄掳茫脢脟脫脡脫脷脡脧脫脦禄煤脝梅鹿脢脮脧拢卢碌录脰脗脠脮脰戮碌录鲁枚脢搂掳脺
+# 脪虏驴脡脛脺脢脟hadoop脩脫脢卤碌录脰脗虏驴路脰脦脛录镁脭脻脦麓戮脥脨梅拢卢脮芒脰脰脟茅驴枚麓媒hadoop禄脰赂麓脢卤禄谩脳脭录潞禄脰赂麓脮媒鲁拢
+# 脠么脢脟禄煤脝梅鹿脢脮脧碌录脰脗拢卢脭貌脨猫脪陋脠脣鹿陇check脡脧脫脦logagent脢脟路帽脝么露炉
 min_ready_file_num=$(($ready_file_num - 10))
 
-#数据最终导入的hive表
+#脢媒戮脻脳卯脰脮碌录脠毛碌脛hive卤铆
 hive_db=$HIVE_DB
 hive_table_array=(${HIVE_TABLE_ARRAY[@]})
 partition_del_interval=$PARTITION_DEL_INTERVAL
-#M/R任务名前缀
+#M/R脠脦脦帽脙没脟掳脳潞
 job_name_prefix=$JOB_NAME_PREFIX
-#M/R脚本名、配置、路径
+#M/R陆脜卤戮脙没隆垄脜盲脰脙隆垄脗路戮露
 map_script=$MAP_SCRIPT
 reduce_script=$REDUCE_SCRIPT
 archive_path=$MAP_ARCHIVE_PATH
@@ -122,7 +122,7 @@ while true;do
     ret_stat=$?
 
     if [ $ret_stat -ne 0 ] || [ $sum_flume_lines -lt $sum_start_lines ];then
-        #当源数据延时1小时未导出时，跳过该时段检查
+        #碌卤脭麓脢媒戮脻脩脫脢卤1脨隆脢卤脦麓碌录鲁枚脢卤拢卢脤酶鹿媒赂脙脢卤露脦录矛虏茅
         if [ $wait_count -eq 60 ];then
             task_name="${pipe_name}_${day}${hour}${minute}"
             echo "some error occur at time[$date_dir], file_count[$file_count]..." >> $log_file
@@ -138,13 +138,13 @@ while true;do
             echo "[TRACE] source dir[${source_dir}] is not ready, wait one minute" >> $log_file
             sleep $wait_time
             ((wait_count++))
-            # 重新计算等待时间
+            # 脰脴脨脗录脝脣茫碌脠麓媒脢卤录盲
             continue
         fi
     fi
     wait_count=0
 
-# 输出目录是否存在, 若存在则先删除
+# 脢盲鲁枚脛驴脗录脢脟路帽麓忙脭脷, 脠么麓忙脭脷脭貌脧脠脡戮鲁媒
     mapred_output_dir=${mapred_output_dir_prefix}/${date_dir}
     hdfs_del_dir ${mapred_output_dir} >> $log_file
     if [ $? -ne 0 ];then
@@ -152,7 +152,7 @@ while true;do
         continue
     fi
 
-# 运行M/R任务, Extraction and Transformation
+# 脭脣脨脨M/R脠脦脦帽, Extraction and Transformation
     map_red_jobname="${job_name_prefix}_MR_${day}${hour}${minute}"
     hadoop_streaming -libjars "${HADOOP_CLASSPATH}/hadoop-streaming-custom-output-1.0.jar" \
                      -D mapred.job.name=${map_red_jobname} \
@@ -170,10 +170,10 @@ while true;do
     fi
 
     for hive_table in "${hive_table_array[@]}";do
-        # M/R输出是否存在
+        # M/R脢盲鲁枚脢脟路帽麓忙脭脷
         hadoop_command fs -test -e "${mapred_output_dir}/${hive_table}"
         if [ $? -eq 0 ];then
-                # 循环导入hive 表, Loading
+                # 脩颅禄路碌录脠毛hive 卤铆, Loading
                 hour_minute=${hour}${minute}
                 hive_jobname="${job_name_prefix}_hive_${hive_table}_${day}${hour}${minute}"
                 hive -e "set mapred.job.name=${hive_jobname}; \
@@ -197,7 +197,7 @@ while true;do
     sql="UPDATE transfer_file_info SET stat=3 WHERE transfer_time='${day}${hour}${minute}'"
     $(${mysql} "${sql}")
 
-# 删除hive表中7天前的数据，处理后结果保留7天
+# 脡戮鲁媒hive卤铆脰脨7脤矛脟掳碌脛脢媒戮脻拢卢麓娄脌铆潞贸陆谩鹿没卤拢脕么7脤矛
     curtime=`date +"%s" -d "${day} ${hour}:${minute}"`
     some_days_ago=$((curtime - partition_del_interval * 24 * 60 * 60))
     del_time=`date  -d "1970-1-1 0:0:0 GMT + ${some_days_ago} seconds"`

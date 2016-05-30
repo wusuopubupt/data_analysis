@@ -7,7 +7,7 @@ then
     exit 1
 fi
 
-#读取配置
+#露脕脠隆脜盲脰脙
 conf=$1
 if [ -f $conf ]
 then
@@ -17,9 +17,9 @@ else
     exit -1
 fi
 
-# 加载conf后定义，否则hadoop_command找不到
-# 删除hdfs上的目录或文件，输入两个参数：目录路径
-# 参数错误返回1，删除失败返回2，成功返回0
+# 录脫脭脴conf潞贸露篓脪氓拢卢路帽脭貌hadoop_command脮脪虏禄碌陆
+# 脡戮鲁媒hdfs脡脧碌脛脛驴脗录禄貌脦脛录镁拢卢脢盲脠毛脕陆赂枚虏脦脢媒拢潞脛驴脗录脗路戮露
+# 虏脦脢媒麓铆脦贸路碌禄脴1拢卢脡戮鲁媒脢搂掳脺路碌禄脴2拢卢鲁脡鹿娄路碌禄脴0
 function hdfs_del_dir()
 {
     if [ $# -lt 1 ]
@@ -46,33 +46,33 @@ function hdfs_del_dir()
     return 0
 }
 
-#起始时间，作为目录
+#脝冒脢录脢卤录盲拢卢脳梅脦陋脛驴脗录
 next_day=$START_DAY
 next_hour=$START_HOUR
 next_minute=$START_MINUTE
 
-#任务调度时间间隔
+#脠脦脦帽碌梅露脠脢卤录盲录盲赂么
 time_interval=$TIME_INTERVAL
 
-#数据输入和输出目录
+#脢媒戮脻脢盲脠毛潞脥脢盲鲁枚脛驴脗录
 source_dir_prefix=$SOURCE_DIR_PREFIX
 mapred_output_dir_prefix=$MAPRED_OUTPUT_DIR_PREFIX
 pipe_name=$LOG_PIPE_NAME
 source_del_interval=$SOURCE_DEL_INTERVAL
 ready_file_num=$READY_FILE_NUM
 
-# 容忍部分数据丢失，但最多丢失10个文件，一般是由于上游机器故障，导致日志导出失败
-# 也可能是hadoop延时导致部分文件暂未就绪，这种情况待hadoop恢复时会自己恢复正常
-# 若是机器故障导致，则需要人工check上游logagent是否启动
+# 脠脻脠脤虏驴路脰脢媒戮脻露陋脢搂拢卢碌芦脳卯露脿露陋脢搂10赂枚脦脛录镁拢卢脪禄掳茫脢脟脫脡脫脷脡脧脫脦禄煤脝梅鹿脢脮脧拢卢碌录脰脗脠脮脰戮碌录鲁枚脢搂掳脺
+# 脪虏驴脡脛脺脢脟hadoop脩脫脢卤碌录脰脗虏驴路脰脦脛录镁脭脻脦麓戮脥脨梅拢卢脮芒脰脰脟茅驴枚麓媒hadoop禄脰赂麓脢卤禄谩脳脭录潞禄脰赂麓脮媒鲁拢
+# 脠么脢脟禄煤脝梅鹿脢脮脧碌录脰脗拢卢脭貌脨猫脪陋脠脣鹿陇check脡脧脫脦logagent脢脟路帽脝么露炉
 min_ready_file_num=$(($ready_file_num - 10))
 
-#数据最终导入的hive表
+#脢媒戮脻脳卯脰脮碌录脠毛碌脛hive卤铆
 hive_db=$HIVE_DB
 hive_table=$HIVE_TABLE
 partition_del_interval=$PARTITION_DEL_INTERVAL
-#M/R任务名前缀
+#M/R脠脦脦帽脙没脟掳脳潞
 job_name_prefix=$JOB_NAME_PREFIX
-#M/R脚本名、配置、路径
+#M/R陆脜卤戮脙没隆垄脜盲脰脙隆垄脗路戮露
 map_script=$MAP_SCRIPT
 reduce_script=$REDUCE_SCRIPT
 archive_path=$MAP_ARCHIVE_PATH
@@ -80,7 +80,7 @@ archive_path=$MAP_ARCHIVE_PATH
 #log
 log_file=$LOG_FILE
 
-#快照文件，保存已经处理的目录，按时间递增
+#驴矛脮脮脦脛录镁拢卢卤拢麓忙脪脩戮颅麓娄脌铆碌脛脛驴脗录拢卢掳麓脢卤录盲碌脻脭枚
 snapshot_file=$SNAPSHOT_FILENAME
 if [ -s $snapshot_file ]
 then
@@ -90,7 +90,7 @@ then
     next_minute=$NEXT_MINUTE
 fi
 
-#分钟数对齐
+#路脰脰脫脢媒露脭脝毛
 next_minute=$((((next_minute/time_interval))*time_interval))
 if [ $next_minute -lt 10 ]
 then
@@ -107,7 +107,7 @@ do
     day=$next_day
     hour=$next_hour
     minute=$next_minute
-# 源数据是否ready, 目录结构：/prefix/pipename/20160304/1030
+# 脭麓脢媒戮脻脢脟路帽ready, 脛驴脗录陆谩鹿鹿拢潞/prefix/pipename/20160304/1030
     #source_dir=${source_dir_prefix}/${pipe_name}/${date_dir}
     date_dir=${day}/${hour}${minute}
     source_dir=${source_dir_prefix}"/access_log."${day}${hour}${minute}".*"
@@ -123,7 +123,7 @@ do
 
     if [ $ret_stat -ne 0 ] || [ $file_count -lt $expected_file_num ]
     then
-#当源数据延时1小时未导出时，跳过该时段检查
+#碌卤脭麓脢媒戮脻脩脫脢卤1脨隆脢卤脦麓碌录鲁枚脢卤拢卢脤酶鹿媒赂脙脢卤露脦录矛虏茅
         if [ $wait_count -eq 60 ]
         then
             task_name="${pipe_name}_${day}${hour}${minute}"
@@ -141,13 +141,13 @@ do
             echo "[TRACE] source dir[${source_dir}] is not ready, wait one minute" >> $log_file
             sleep $wait_time
             ((wait_count++))
-            # 重新计算等待时间
+            # 脰脴脨脗录脝脣茫碌脠麓媒脢卤录盲
             continue
         fi
     fi
     wait_count=0
 
-# 输出目录是否存在, 若存在则先删除
+# 脢盲鲁枚脛驴脗录脢脟路帽麓忙脭脷, 脠么麓忙脭脷脭貌脧脠脡戮鲁媒
     mapred_output_dir=${mapred_output_dir_prefix}/${date_dir}
     hdfs_del_dir ${mapred_output_dir} >> $log_file
     if [ $? -ne 0 ]
@@ -156,7 +156,7 @@ do
         continue
     fi
 
-# 运行M/R任务, Extraction and Transformation
+# 脭脣脨脨M/R脠脦脦帽, Extraction and Transformation
     map_red_jobname="${job_name_prefix}_MR_${day}${hour}${minute}"
     hadoop_streaming -libjars "${HADOOP_CLASSPATH}/hadoop-streaming-custom-output-1.0.jar" \
                      -D mapred.job.name=${map_red_jobname} \
@@ -174,11 +174,11 @@ do
         echo "[TRACE] hadoop M/R success,job_name[${map_red_jobname}]." >> $log_file
     fi
 
-# M/R输出是否存在
+# M/R脢盲鲁枚脢脟路帽麓忙脭脷
     hadoop_command fs -test -e ${mapred_output_dir}
     if [ $? -eq 0 ]
     then
-# 导入hive 表, Loading
+# 碌录脠毛hive 卤铆, Loading
         hour_minute=${hour}${minute}
         hive_jobname="${job_name_prefix}_hive_${day}${hour}${minute}"
         hive -e "set mapred.job.name=${hive_jobname}; \
@@ -194,7 +194,7 @@ do
             echo "[NOTICE] load data to hive_table[${hive_table}] success,jobname[${hive_jobname}]" >> $log_file
         fi
 
-# 计算下一个时间目录
+# 录脝脣茫脧脗脪禄赂枚脢卤录盲脛驴脗录
         timestamp=`date +"%s" -d "${day} ${hour}:${minute}"`
         timestamp=$((timestamp + time_interval * 60))
         date_string=`date  -d "1970-1-1 0:0:0 GMT + ${timestamp} seconds"`
@@ -202,7 +202,7 @@ do
         next_hour=`date +"%H" -d "${date_string}"`
         next_minute=`date +"%M" -d "${date_string}"`
 
-# 写入快照，快照中表示下一次要跑的目录
+# 脨麓脠毛驴矛脮脮拢卢驴矛脮脮脰脨卤铆脢戮脧脗脪禄麓脦脪陋脜脺碌脛脛驴脗录
         echo "NEXT_DAY=${next_day}" > $snapshot_file;
         echo "NEXT_HOUR=${next_hour}" >> $snapshot_file;
         echo "NEXT_MINUTE=${next_minute}" >> $snapshot_file;
@@ -211,8 +211,8 @@ do
         continue
     fi
 
-# 删除历史数据
-# 删除3天之前的原始数据, 原始数据保存3天
+# 脡戮鲁媒脌煤脢路脢媒戮脻
+# 脡戮鲁媒3脤矛脰庐脟掳碌脛脭颅脢录脢媒戮脻, 脭颅脢录脢媒戮脻卤拢麓忙3脤矛
     curtime=`date +"%s" -d "${day} ${hour}:${minute}"`
     some_days_ago=$((curtime - source_del_interval * 24 * 60 * 60))
     del_time=`date  -d "1970-1-1 0:0:0 GMT + ${some_days_ago} seconds"`
@@ -227,7 +227,7 @@ do
         continue
     fi
 
-# 删除hive表中7天前的数据，处理后结果保留7天
+# 脡戮鲁媒hive卤铆脰脨7脤矛脟掳碌脛脢媒戮脻拢卢麓娄脌铆潞贸陆谩鹿没卤拢脕么7脤矛
     some_days_ago=$((curtime - partition_del_interval * 24 * 60 * 60))
     del_time=`date  -d "1970-1-1 0:0:0 GMT + ${some_days_ago} seconds"`
     del_day=`date +"%Y%m%d" -d "${del_time}"`
