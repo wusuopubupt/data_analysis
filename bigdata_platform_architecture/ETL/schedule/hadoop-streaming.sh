@@ -1,10 +1,16 @@
 #!/bin/bash
+
+# refer: https://hadoop.apache.org/docs/r2.7.1/hadoop-streaming/HadoopStreaming.html
+
 hdfs dfs -rm -r hdfs://ip:port/user/dashwang/tmp/output
 
 #           symbol link
 # my_script  ----->   mr.tar.gz
 #	./mapper.sh
 #	./reducer.sh
+
+# mapper.sh : cat
+# reducer.sh: wc -l
 
 # cat 1.txt 2.txt | wc -l
 /usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar  \
